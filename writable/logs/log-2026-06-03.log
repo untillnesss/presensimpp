@@ -1,0 +1,31 @@
+ERROR - 2026-06-03 15:51:27 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2026-06-03 15:51:27 --> 220 smtp.gmail.com ESMTP d9443c01a7336-2c164f6e294sm17893705ad.6 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [202.136.82.225]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [202.136.82.225]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+from: 530-5.7.0 Authentication Required. For more information, go to
+530 5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d9443c01a7336-2c164f6e294sm17893705ad.6 - gsmtp
+
+The following SMTP error was encountered: 530-5.7.0 Authentication Required. For more information, go to
+530 5.7.0  https://support.google.com/accounts/troubleshooter/2402620. d9443c01a7336-2c164f6e294sm17893705ad.6 - gsmtp
+
+quit: 221 2.0.0 closing connection d9443c01a7336-2c164f6e294sm17893705ad.6 - gsmtp
+
