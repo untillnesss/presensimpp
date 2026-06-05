@@ -160,7 +160,7 @@
 <body class="bg-soft-auth">
 
 <main class="d-flex align-items-center justify-content-center" style="min-height:100vh">
-    <div style="width:100%; max-width:420px">
+    <div style="width:100%; max-width:420px; padding: 0 20px">
         <?= $this->renderSection('content') ?>
     </div>
 </main>

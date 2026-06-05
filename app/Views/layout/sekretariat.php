@@ -90,11 +90,31 @@
         .badge-terlambat { background:#fee2e2;color:#dc2626; }
         .badge-izin      { background:#fef9c3;color:#b45309; }
         .badge-sakit     { background:#dbeafe;color:#2563eb; }
+
+        /* ===== MOBILE RESPONSIVE ===== */
+        .hamburger { display:none;position:fixed;top:14px;left:16px;z-index:300;background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:10px;width:42px;height:42px;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px; }
+        .sidebar-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;backdrop-filter:blur(2px); }
+
+        @media (max-width: 768px) {
+            .hamburger { display:flex; }
+            .sidebar { transform:translateX(-100%);transition:transform 0.3s ease; }
+            .sidebar.open { transform:translateX(0); }
+            .sidebar-overlay.open { display:block; }
+            .topbar { left:0;padding:0 16px 0 70px; }
+            .topbar-left .topbar-greeting { font-size:12px; }
+            .topbar-profile-btn { padding:6px 10px 6px 6px;gap:8px; }
+            .topbar-profile-name { font-size:12px; }
+            .topbar-profile-role { display:none; }
+            .main-content { margin-left:0;padding:16px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+
+<div class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <div class="sidebar-logo-wrap">
             <img src="<?= base_url('assets/img/logo.png') ?>" alt="Logo">
@@ -108,9 +128,7 @@
         <a href="/sekretariat/dashboard" class="<?= ($seg2=='dashboard')?'active':'' ?>"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="/sekretariat/presensi"  class="<?= ($seg2=='presensi') ?'active':'' ?>"><i class="bi bi-calendar-check"></i> Data Presensi</a>
         <a href="/sekretariat/profil"    class="<?= ($seg2=='profil')   ?'active':'' ?>"><i class="bi bi-person-circle"></i> Profil</a>
-    </div>
-    <div class="sidebar-footer">
-        <a href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        <a href="/logout" style="color:rgba(252,165,165,0.7);"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
 </div>
 
@@ -145,5 +163,15 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+</script>
 </body>
 </html>
