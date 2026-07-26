@@ -39,14 +39,11 @@ class Dashboard extends BaseController
 
         $jumlahTerlambat  = $presensiModel->where('tanggal', $hariIni)->where('status', 'terlambat')->countAllResults();
         $jumlahIzin       = $presensiModel->where('tanggal', $hariIni)->where('status', 'izin')->countAllResults();
-        $jumlahSakit      = $presensiModel->where('tanggal', $hariIni)->where('status', 'sakit')->countAllResults();
-
         return view('sekretariat/dashboard', [
             'jumlahHadir'      => $jumlahHadir,
             'jumlahTidakHadir' => $jumlahTidakHadir,
             'jumlahTerlambat'  => $jumlahTerlambat,
             'jumlahIzin'       => $jumlahIzin,
-            'jumlahSakit'      => $jumlahSakit,
         ]);
     }
 

@@ -152,16 +152,15 @@ class Presensi extends BaseController
 
             if (in_array($status, ['hadir', 'terlambat']) && $setting) {
                 $statusFinal = 'hadir';
-                if ($jamSekarang > $setting['jam_masuk_selesai']) {
-                    if ($jamSekarang <= $setting['batas_terlambat']) {
-                        $statusFinal   = 'terlambat';
-                        $telat         = strtotime($jamSekarang) - strtotime($setting['jam_masuk_selesai']);
-                        $keterlambatan = floor($telat / 60);
-                    } else {
-                        $statusFinal = 'alpha';
-                    }
+                if ($jamSekarang > $setting['batas_terlambat']) {
+                    // Lewat batas_terlambat (misal 08:20) = terlambat, apapun
+                    // pilihan admin. Keterlambatan dihitung dari jam_masuk_selesai (08:00).
+                    $statusFinal   = 'terlambat';
+                    $telat         = strtotime($jamSekarang) - strtotime($setting['jam_masuk_selesai']);
+                    $keterlambatan = floor($telat / 60);
                 }
             }
+
 
             $this->presensiModel->insert([
                 'id_user'       => $idUser,
@@ -251,14 +250,12 @@ class Presensi extends BaseController
 
         if (in_array($statusPost, ['hadir', 'terlambat']) && $jamMasuk && $setting) {
             $status = 'hadir';
-            if ($jamMasuk > $setting['jam_masuk_selesai']) {
-                if ($jamMasuk <= $setting['batas_terlambat']) {
-                    $status        = 'terlambat';
-                    $telat         = strtotime($jamMasuk) - strtotime($setting['jam_masuk_selesai']);
-                    $keterlambatan = floor($telat / 60);
-                } else {
-                    $status = 'alpha';
-                }
+            if ($jamMasuk > $setting['batas_terlambat']) {
+                // Lewat batas_terlambat (misal 08:20) = terlambat, apapun
+                // pilihan admin. Keterlambatan dihitung dari jam_masuk_selesai (08:00).
+                $status        = 'terlambat';
+                $telat         = strtotime($jamMasuk) - strtotime($setting['jam_masuk_selesai']);
+                $keterlambatan = floor($telat / 60);
             }
         }
 

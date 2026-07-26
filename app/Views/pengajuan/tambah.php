@@ -30,7 +30,6 @@
         <select name="jenis" class="form-select rounded-pill" required>
             <option value="">-- Pilih --</option>
             <option value="Izin"  <?= old('jenis')=='Izin'  ?'selected':'' ?>>Izin</option>
-            <option value="Sakit" <?= old('jenis')=='Sakit' ?'selected':'' ?>>Sakit</option>
         </select>
     </div>
 

@@ -157,9 +157,6 @@ $fotoField   = $warnaMasuk ? 'foto_masuk' : 'foto_pulang';
                     <option value="">-- Pilih Status --</option>
                     <option value="hadir"       <?= old('status') === 'hadir'       ? 'selected' : '' ?>>✅ Hadir</option>
                     <option value="terlambat"   <?= old('status') === 'terlambat'   ? 'selected' : '' ?>>⏰ Terlambat</option>
-                    <option value="izin"        <?= old('status') === 'izin'        ? 'selected' : '' ?>>📅 Izin</option>
-                    <option value="sakit"       <?= old('status') === 'sakit'       ? 'selected' : '' ?>>💊 Sakit</option>
-                    <option value="tidak hadir" <?= old('status') === 'tidak hadir' ? 'selected' : '' ?>>❌ Tidak Hadir</option>
                 </select>
                 <?php if($jenis === 'masuk'): ?>
                 <div style="font-size:11px;color:#9ca3af;margin-top:4px;">

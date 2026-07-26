@@ -220,13 +220,6 @@ function setFilter(val) {
     document.getElementById('wrapHarian').style.display = val === 'harian'   ? '' : 'none';
     document.getElementById('wrapMinggu').style.display = val === 'mingguan' ? '' : 'none';
     document.getElementById('wrapBulan').style.display  = val === 'bulanan'  ? 'flex' : 'none';
-} else {
-                btn.style.background = '#f9fafb';
-                btn.style.color = '#6b7280';
-                btn.style.borderColor = '#e5e7eb';
-            }
-        });
-    });
 }
 
 function updateMinggu(val) {

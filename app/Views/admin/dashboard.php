@@ -60,7 +60,7 @@
     <div class="card-body p-0">
         <div class="row g-0">
 
-            <!-- KOLOM KIRI: Hadir, Tidak Hadir, Terlambat -->
+            <!-- KOLOM KIRI: Instansi Hadir, Instansi Tidak Hadir -->
             <div class="col-lg-6" style="border-right:1px solid #eef0fb;">
 
                 <a href="/admin/dashboard/hadir" class="instansi-item text-decoration-none" style="color:inherit;">
@@ -79,7 +79,7 @@
                     </div>
                 </a>
 
-                <a href="/admin/dashboard/tidak-hadir" class="instansi-item text-decoration-none" style="color:inherit;">
+                <a href="/admin/dashboard/tidak-hadir" class="instansi-item text-decoration-none" style="color:inherit;border-bottom:none;">
                     <div style="display:flex;align-items:center;gap:16px;">
                         <div style="width:44px;height:44px;border-radius:13px;background:#fee2e2;display:flex;align-items:center;justify-content:center;">
                             <i class="bi bi-x-circle-fill" style="color:#dc2626;font-size:20px;"></i>
@@ -95,7 +95,12 @@
                     </div>
                 </a>
 
-                <a href="/admin/dashboard/detail/terlambat" class="instansi-item text-decoration-none" style="color:inherit;border-bottom:none;">
+            </div>
+
+            <!-- KOLOM KANAN: Terlambat, Izin -->
+            <div class="col-lg-6">
+
+                <a href="/admin/dashboard/detail/terlambat" class="instansi-item text-decoration-none" style="color:inherit;">
                     <div style="display:flex;align-items:center;gap:16px;">
                         <div style="width:44px;height:44px;border-radius:13px;background:#fee2e2;display:flex;align-items:center;justify-content:center;">
                             <i class="bi bi-clock-history" style="color:#dc2626;font-size:20px;"></i>
@@ -111,12 +116,7 @@
                     </div>
                 </a>
 
-            </div>
-
-            <!-- KOLOM KANAN: Izin, Sakit -->
-            <div class="col-lg-6">
-
-                <a href="/admin/dashboard/detail/izin" class="instansi-item text-decoration-none" style="color:inherit;">
+                <a href="/admin/dashboard/detail/izin" class="instansi-item text-decoration-none" style="color:inherit;border-bottom:none;">
                     <div style="display:flex;align-items:center;gap:16px;">
                         <div style="width:44px;height:44px;border-radius:13px;background:#fef9c3;display:flex;align-items:center;justify-content:center;">
                             <i class="bi bi-person-check" style="color:#b45309;font-size:20px;"></i>
@@ -131,23 +131,6 @@
                         <div style="font-size:11px;color:#9ca3af;">pegawai</div>
                     </div>
                 </a>
-
-                <a href="/admin/dashboard/detail/sakit" class="instansi-item text-decoration-none" style="color:inherit;">
-                    <div style="display:flex;align-items:center;gap:16px;">
-                        <div style="width:44px;height:44px;border-radius:13px;background:#dbeafe;display:flex;align-items:center;justify-content:center;">
-                            <i class="bi bi-heart-pulse" style="color:#2563eb;font-size:20px;"></i>
-                        </div>
-                        <div>
-                            <div style="font-weight:700;font-size:14px;color:#1e1b4b;">Sakit</div>
-                            <div style="font-size:12px;color:#9ca3af;">Pegawai sakit hari ini</div>
-                        </div>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-size:26px;font-weight:800;color:#2563eb;"><?= $jumlahSakit ?></div>
-                        <div style="font-size:11px;color:#9ca3af;">pegawai</div>
-                    </div>
-                </a>
-
                 </div>
         </div>
     </div>

@@ -86,7 +86,6 @@
                         <?php if($st=='hadir'): ?><span class="badge-status badge-hadir">Hadir</span>
                         <?php elseif($st=='terlambat'): ?><span class="badge-status badge-terlambat">Terlambat</span>
                         <?php elseif($st=='izin'): ?><span class="badge-status badge-izin">Izin</span>
-                        <?php elseif($st=='sakit'): ?><span class="badge-status badge-sakit">Sakit</span>
                         <?php else: ?><span style="color:#6b7280;"><?= ucfirst($st) ?></span><?php endif; ?>
                     </td>
                     <?php if($kategori == 'terlambat'): ?>

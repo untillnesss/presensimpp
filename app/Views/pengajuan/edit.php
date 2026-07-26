@@ -17,7 +17,6 @@
         <label>Jenis</label>
         <select name="jenis" class="form-control">
             <option value="izin" <?= $data['jenis']=='izin'?'selected':'' ?>>Izin</option>
-            <option value="sakit" <?= $data['jenis']=='sakit'?'selected':'' ?>>Sakit</option>
         </select>
     </div>
 

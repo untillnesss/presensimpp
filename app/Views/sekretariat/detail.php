@@ -75,7 +75,6 @@
                     <?php if($st=='hadir'): ?><span class="badge-pill bp-hadir">Hadir</span>
                     <?php elseif($st=='terlambat'): ?><span class="badge-pill bp-terlambat">Terlambat</span>
                     <?php elseif($st=='izin'): ?><span class="badge-pill bp-izin">Izin</span>
-                    <?php elseif($st=='sakit'): ?><span class="badge-pill bp-sakit">Sakit</span>
                     <?php else: ?><span class="badge-pill" style="background:#f3f4f6;color:#6b7280;"><?= ucfirst($st) ?></span>
                     <?php endif; ?>
                 </td>

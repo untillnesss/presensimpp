@@ -44,8 +44,6 @@ class Dashboard extends BaseController
 
         $jumlahTerlambat = $presensiModel->where('tanggal', $hariIni)->where('status', 'terlambat')->countAllResults();
         $jumlahIzin      = $presensiModel->where('tanggal', $hariIni)->where('status', 'izin')->countAllResults();
-        $jumlahSakit     = $presensiModel->where('tanggal', $hariIni)->where('status', 'sakit')->countAllResults();
-
         $jumlahPending   = $pengajuanModel->where('status_pengajuan', 'menunggu')->countAllResults();
         $jumlahDisetujui = $pengajuanModel->where('status_pengajuan', 'disetujui')->countAllResults();
         $jumlahDitolak   = $pengajuanModel->where('status_pengajuan', 'ditolak')->countAllResults();
@@ -58,7 +56,6 @@ class Dashboard extends BaseController
             'jumlahDitolak'    => $jumlahDitolak,
             'jumlahTerlambat'  => $jumlahTerlambat,
             'jumlahIzin'       => $jumlahIzin,
-            'jumlahSakit'      => $jumlahSakit,
         ]);
     }
 
@@ -108,8 +105,8 @@ class Dashboard extends BaseController
         $data  = [];
         $judul = ucfirst($kategori);
 
-        // Handle semua kategori pegawai: terlambat, izin, sakit, dll.
-        if (in_array($kategori, ['terlambat', 'izin', 'sakit', 'alpha'])) {
+        // Handle semua kategori pegawai: terlambat, izin dll.
+        if (in_array($kategori, ['terlambat', 'izin',  'alpha'])) {
             $judul = 'Pegawai ' . ucfirst($kategori);
             $data  = $presensiModel
                 ->select('data_presensi.*, profil.nama, instansi.nama_instansi')
