@@ -24,6 +24,7 @@ $routes->post('register', 'Auth::processRegister');
 // ================= VERIFIKASI OTP =================
 $routes->get('verifikasi-otp', 'Auth::verifikasiOtp');
 $routes->post('verifikasi-otp', 'Auth::processVerifikasiOtp');
+$routes->get('verifikasi-otp/kirim-ulang', 'Auth::resendOtpRegister');
 
 // ================= DASHBOARD USER =================
 $routes->get('dashboard', 'Dashboard::index', ['filter' => 'auth']);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Waktu pembuatan: 26 Jul 2026 pada 06.28
+-- Waktu pembuatan: 05 Agu 2026 pada 01.08
 -- Versi server: 8.0.30
 -- Versi PHP: 8.1.10
 
@@ -155,7 +155,9 @@ INSERT INTO `log_aktivitas` (`id_log`, `id_user`, `role`, `aksi`, `keterangan`, 
 (102, 7, 'admin', 'Reset Device', 'Reset device: Cici Silvia Nanda', '2026-05-29 11:37:06'),
 (103, 7, 'admin', 'Tambah Presensi Masuk', 'Absen masuk manual: Cici Silvia Nanda (No.ID: 1412220009)', '2026-07-26 11:58:51'),
 (104, 7, 'admin', 'Reset Device', 'Reset device: Cici Silvia Nanda', '2026-07-26 12:01:44'),
-(105, 7, 'admin', 'Tambah Presensi Masuk', 'Absen masuk manual: Cici Silvia Nanda (No.ID: 1412220009)', '2026-07-26 12:32:45');
+(105, 7, 'admin', 'Tambah Presensi Masuk', 'Absen masuk manual: Cici Silvia Nanda (No.ID: 1412220009)', '2026-07-26 12:32:45'),
+(106, 7, 'admin', 'Tolak Akun', 'Menolak akun: jalang875@gmail.com', '2026-07-29 14:19:33'),
+(107, 7, 'admin', 'Reset Device', 'Reset device: Cici Silvia Nanda', '2026-07-29 14:19:45');
 
 -- --------------------------------------------------------
 
@@ -189,7 +191,9 @@ INSERT INTO `otp` (`id_otp`, `id_user`, `kode_otp`, `expired_at`, `is_used`) VAL
 (30, 8, '801192', '2026-06-03 16:04:27', 1),
 (31, 7, '262317', '2026-07-26 11:50:27', 1),
 (32, 1, '893991', '2026-07-26 12:05:51', 1),
-(33, 8, '877154', '2026-07-26 12:53:10', 1);
+(33, 8, '877154', '2026-07-26 12:53:10', 1),
+(35, 14, '346522', '2026-07-29 14:25:45', 0),
+(36, 14, '417640', '2026-07-29 14:27:46', 0);
 
 -- --------------------------------------------------------
 
@@ -244,7 +248,8 @@ INSERT INTO `profil` (`id_profil`, `id_user`, `no_id`, `nama`, `jabatan`, `id_in
 (1, 1, '1412220009', 'Cici Silvia Nanda', 'Staff', 13, '1769884757_f26c017bf531ad084133.jpg', '2026-05-05 13:53:06'),
 (2, 7, '12345678', 'Riva', 'Admin', 13, '1776665730_ea84fbb94e9843b90eed.jpg', '2026-04-20 13:15:30'),
 (4, 8, '111222333', 'Adnan', 'Sekretariat', 13, '1776701197_b790040ca1f5cac1e8dc.jpg', '2026-04-20 23:06:37'),
-(6, 12, '1122334455', 'Anis Yuli', 'Staff', 20, '', '2026-05-06 15:10:28');
+(6, 12, '1122334455', 'Anis Yuli', 'Staff', 20, '', '2026-05-06 15:10:28'),
+(8, 14, '88888888', 'Riva', 'Staff', 1, '', '2026-07-29 14:20:45');
 
 -- --------------------------------------------------------
 
@@ -284,6 +289,7 @@ CREATE TABLE `user` (
   `password` varchar(100) NOT NULL,
   `role` enum('admin','pegawai','sekretariat') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `is_active` tinyint(1) NOT NULL,
+  `email_verified` tinyint(1) NOT NULL DEFAULT '0',
   `device_token` varchar(100) DEFAULT NULL,
   `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -292,11 +298,12 @@ CREATE TABLE `user` (
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id_user`, `email`, `password`, `role`, `is_active`, `device_token`, `created_at`) VALUES
-(1, 'silviananda266@gmail.com', '$2y$10$DaPMXgKpzEhtLphcH8Xh2.776U7H8QdbnwaWnhqsLOvyds7zG/MQq', 'pegawai', 1, 'dev_8mctt1', '2026-01-28 05:31:39'),
-(7, 'cicinanda335@gmail.com', '$2y$10$a7InicedV4DZO1r173OV2.JdyPZLg6UwCKQlLI36NRPIl42R37aMe', 'admin', 1, NULL, '2026-04-02 07:47:48'),
-(8, 'presensi.mpp@gmail.com', '$2y$10$lR/F//zPnkHKGfsjR6cPUuhJcs7GPNWZFtnPal6SOPI6BNwmfRam.', 'sekretariat', 1, NULL, '2026-04-20 07:27:16'),
-(12, 'anisnurida123.com@gmail.com', '$2y$10$Abk2HDXGyfCT4GIBoJJ3E.DHhQmD1hB0bFIkYYzdH7SR9XpI0RO.m', 'pegawai', 0, NULL, '2026-05-06 15:10:28');
+INSERT INTO `user` (`id_user`, `email`, `password`, `role`, `is_active`, `email_verified`, `device_token`, `created_at`) VALUES
+(1, 'silviananda266@gmail.com', '$2y$10$DaPMXgKpzEhtLphcH8Xh2.776U7H8QdbnwaWnhqsLOvyds7zG/MQq', 'pegawai', 1, 1, NULL, '2026-01-28 05:31:39'),
+(7, 'cicinanda335@gmail.com', '$2y$10$a7InicedV4DZO1r173OV2.JdyPZLg6UwCKQlLI36NRPIl42R37aMe', 'admin', 1, 1, NULL, '2026-04-02 07:47:48'),
+(8, 'presensi.mpp@gmail.com', '$2y$10$lR/F//zPnkHKGfsjR6cPUuhJcs7GPNWZFtnPal6SOPI6BNwmfRam.', 'sekretariat', 1, 1, NULL, '2026-04-20 07:27:16'),
+(12, 'anisnurida123.com@gmail.com', '$2y$10$Abk2HDXGyfCT4GIBoJJ3E.DHhQmD1hB0bFIkYYzdH7SR9XpI0RO.m', 'pegawai', 0, 0, NULL, '2026-05-06 15:10:28'),
+(14, 'jalang875@gmail.com', '$2y$10$2fmu2kUu5JTy.TSjG6vtyOu0PSt1X83cBSbbnFhO0G4tVNYxicFGy', 'pegawai', 0, 0, NULL, '2026-07-29 14:20:45');
 
 --
 -- Indexes for dumped tables
@@ -379,13 +386,13 @@ ALTER TABLE `instansi`
 -- AUTO_INCREMENT untuk tabel `log_aktivitas`
 --
 ALTER TABLE `log_aktivitas`
-  MODIFY `id_log` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id_log` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT untuk tabel `otp`
 --
 ALTER TABLE `otp`
-  MODIFY `id_otp` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_otp` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT untuk tabel `pengajuan`
@@ -397,7 +404,7 @@ ALTER TABLE `pengajuan`
 -- AUTO_INCREMENT untuk tabel `profil`
 --
 ALTER TABLE `profil`
-  MODIFY `id_profil` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_profil` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT untuk tabel `setting_absen`
@@ -409,7 +416,7 @@ ALTER TABLE `setting_absen`
 -- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_user` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

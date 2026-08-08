@@ -28,6 +28,14 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Email tidak terdaftar');
         }
 
+        if (empty($user['email_verified'])) {
+            $this->kirimOtpRegistrasi($user);
+
+            return redirect()->to('/verifikasi-otp')->with('error',
+                'Emailmu belum diverifikasi. Kode OTP baru sudah dikirim ke emailmu, silakan verifikasi dulu.'
+            );
+        }
+
         if ($user['is_active'] != 1) {
             return redirect()->back()->with('error',
                 'Akunmu belum disetujui admin. Silakan hubungi admin MPP Tuban untuk aktivasi akun.'
@@ -124,11 +132,12 @@ class Auth extends BaseController
 
         // Buat akun user
         $idUserBaru = $userModel->insert([
-            'email'      => $email,
-            'password'   => password_hash($password, PASSWORD_DEFAULT),
-            'role'       => 'pegawai',
-            'is_active'  => 0, // menunggu persetujuan admin
-            'created_at' => date('Y-m-d H:i:s'),
+            'email'          => $email,
+            'password'       => password_hash($password, PASSWORD_DEFAULT),
+            'role'           => 'pegawai',
+            'is_active'      => 0, // menunggu persetujuan admin
+            'email_verified' => 0, // menunggu verifikasi OTP email
+            'created_at'     => date('Y-m-d H:i:s'),
         ]);
 
         // Buat profil langsung sekaligus
@@ -142,15 +151,61 @@ class Auth extends BaseController
             'update_at'   => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->to('/login')
-            ->with('success', 'Akun berhasil dibuat! Akunmu sedang menunggu persetujuan admin MPP Tuban. Silakan hubungi admin untuk aktivasi.');
+        $userBaru = $userModel->find($idUserBaru);
+        $this->kirimOtpRegistrasi($userBaru);
+
+        return redirect()->to('/verifikasi-otp')
+            ->with('success', 'Akun berhasil dibuat! Kami sudah mengirim kode OTP ke email kamu. Masukkan kodenya untuk memverifikasi email.');
+    }
+
+    /**
+     * Generate kode OTP, simpan ke tabel otp, dan kirim ke email user.
+     * Dipakai saat register dan saat resend OTP.
+     */
+    private function kirimOtpRegistrasi(array $user): void
+    {
+        $otpModel = new OtpModel();
+
+        $otp = rand(100000, 999999);
+
+        $otpModel->insert([
+            'id_user'    => $user['id_user'],
+            'kode_otp'   => $otp,
+            'expired_at' => date('Y-m-d H:i:s', strtotime('+5 minutes')),
+            'is_used'    => 0,
+        ]);
+
+        session()->set('otp_user_id', $user['id_user']);
+
+        $emailService = \Config\Services::email();
+        $emailService->setTo($user['email']);
+        $emailService->setFrom('presensi.mpp@gmail.com', 'Sistem Presensi');
+        $emailService->setSubject('Kode Verifikasi Email - Presensi MPP Tuban');
+        $emailService->setMessage(
+            "Halo,<br><br>"
+            . "Terima kasih sudah mendaftar di Sistem Presensi MPP Tuban.<br>"
+            . "Kode OTP untuk verifikasi emailmu adalah: <b style=\"font-size:20px;\">$otp</b><br><br>"
+            . "Kode ini berlaku selama 5 menit. Jangan bagikan kode ini ke siapa pun."
+        );
+        $emailService->send();
     }
 
     /* ================= OTP VERIFIKASI ================= */
 
     public function verifikasiOtp()
     {
-        return view('auth/verifikasi_otp');
+        $userId = session()->get('otp_user_id');
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        $userModel = new UserModel();
+        $user      = $userModel->find($userId);
+
+        return view('auth/verifikasi_otp', [
+            'email' => $user['email'] ?? '',
+        ]);
     }
 
     public function processVerifikasiOtp()
@@ -177,13 +232,41 @@ class Auth extends BaseController
                 ->with('error', 'Kode OTP salah atau sudah kadaluarsa');
         }
 
-        $userModel->update($userId, ['is_active' => 1]);
+        // Verifikasi email TIDAK sama dengan persetujuan admin.
+        // is_active tetap 0 sampai admin menyetujui akun secara terpisah.
+        $userModel->update($userId, ['email_verified' => 1]);
         $otpModel->update($otp['id_otp'], ['is_used' => 1]);
 
         session()->remove('otp_user_id');
 
         return redirect()->to('/login')
-            ->with('success', 'Akun berhasil diverifikasi, silakan login');
+            ->with('success', 'Email berhasil diverifikasi! Akunmu sekarang menunggu persetujuan admin MPP Tuban sebelum bisa login.');
+    }
+
+    public function resendOtpRegister()
+    {
+        $userId = session()->get('otp_user_id');
+
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        $userModel = new UserModel();
+        $user      = $userModel->find($userId);
+
+        if (!$user) {
+            session()->remove('otp_user_id');
+            return redirect()->to('/login');
+        }
+
+        if ($user['email_verified'] == 1) {
+            return redirect()->to('/login')->with('success', 'Email sudah terverifikasi, silakan login.');
+        }
+
+        $this->kirimOtpRegistrasi($user);
+
+        return redirect()->to('/verifikasi-otp')
+            ->with('success', 'Kode OTP baru sudah dikirim ke emailmu.');
     }
 
     /* ================= LUPA PASSWORD ================= */

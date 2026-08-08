@@ -11,6 +11,6 @@ class UserModel extends Model
     protected $returnType = 'array';
 
     protected $allowedFields = [
-        'email', 'password', 'role', 'is_active', 'created_at', 'device_token'
+        'email', 'password', 'role', 'is_active', 'email_verified', 'created_at', 'device_token'
     ];
 }

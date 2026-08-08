@@ -34,12 +34,13 @@ class Pegawai extends BaseController
             ->orderBy('profil.nama', 'ASC')
             ->findAll();
 
-        // Akun menunggu persetujuan
+        // Akun menunggu persetujuan (hanya yang emailnya SUDAH terverifikasi OTP)
         $menunggu = $this->userModel
             ->select('user.id_user, user.email, user.created_at, profil.nama, profil.no_id, profil.jabatan, instansi.nama_instansi')
             ->join('profil', 'profil.id_user = user.id_user', 'left')
             ->join('instansi', 'instansi.id_instansi = profil.id_instansi', 'left')
             ->where('user.is_active', 0)
+            ->where('user.email_verified', 1)
             ->where('user.role', 'pegawai')
             ->orderBy('user.created_at', 'DESC')
             ->findAll();
@@ -78,11 +79,12 @@ class Pegawai extends BaseController
         }
 
         $idUserBaru = $this->userModel->insert([
-            'email'      => $email,
-            'password'   => password_hash($password, PASSWORD_DEFAULT),
-            'role'       => 'pegawai',
-            'is_active'  => 1,
-            'created_at' => date('Y-m-d H:i:s'),
+            'email'          => $email,
+            'password'       => password_hash($password, PASSWORD_DEFAULT),
+            'role'           => 'pegawai',
+            'is_active'      => 1,
+            'email_verified' => 1, // dibuat langsung oleh admin, tidak perlu OTP
+            'created_at'     => date('Y-m-d H:i:s'),
         ]);
 
         $this->profilModel->insert([
@@ -124,6 +126,7 @@ class Pegawai extends BaseController
 
         if (!$user) return redirect()->back()->with('error', 'Akun tidak ditemukan');
 
+        (new \App\Models\OtpModel())->where('id_user', $idUser)->delete();
         $this->profilModel->where('id_user', $idUser)->delete();
         $this->userModel->delete($idUser);
         logAktivitas('Tolak Akun', 'Menolak akun: ' . ($profil['nama'] ?? $user['email']));
@@ -185,6 +188,7 @@ class Pegawai extends BaseController
     public function delete($idUser)
     {
         $profil = $this->profilModel->where('id_user', $idUser)->first();
+        (new \App\Models\OtpModel())->where('id_user', $idUser)->delete();
         $this->profilModel->where('id_user', $idUser)->delete();
         $this->userModel->delete($idUser);
 
